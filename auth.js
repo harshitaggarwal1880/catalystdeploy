@@ -23,7 +23,7 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 
 function authenticateToken(req, res, next) {
-  const token = req.session.jwt;
+  const token = req.cookies.jwt;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
@@ -93,8 +93,8 @@ route.post("/login", (req, res) => {
       if (isMatch) {
         const user = { id: userId, name: username };
         const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
-        // res.cookie("jwt", accessToken, { httpOnly: true, sameSite: 'strict', secure: true });
-        req.session.jwt = accessToken;
+        res.cookie("jwt", accessToken, { httpOnly: true, sameSite: 'strict', secure: true });
+        // req.session.jwt = accessToken;
         res.send(true);
       } else {
         res.send(false);
@@ -112,7 +112,7 @@ route.get("/fetchCurrentUser", authenticateToken, (req, res) => {
 
 route.get("/isLoggedIn", (req, res) => {
   console.log("Login checking");
-  if (req.session.jwt) {
+  if (req.cookies["jwt"]) {
     res.send(true);
   } else {
     res.send(false);
@@ -120,7 +120,7 @@ route.get("/isLoggedIn", (req, res) => {
 });
 
 function authenticateToken(req, res, next) {
-  const token = req.session.jwt;
+  const token = req.cookies.jwt;
   if (token == null) return false;
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
@@ -130,8 +130,8 @@ function authenticateToken(req, res, next) {
 }
 
 route.get("/clear", (req, res) => {
-  // res.clearCookie("jwt", { path: "/" });
-  req.session.jwt = null;
+  res.clearCookie("jwt", { path: "/" });
+  // req.session.jwt = null;
   res.send(true);
 });
 

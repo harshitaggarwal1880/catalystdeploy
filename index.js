@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const rateLimit = require("express-rate-limit");
 const path = require("path");
 const authRoutes = require("./auth");
-const session = require("express-session");
+// const session = require("express-session");
 
 const app = express();
 
@@ -27,18 +27,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 app.use(express.static(path.join(__dirname, "./build")));
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: "session",
-    cookie: {
-      // maxAge: 30 * 60 * 60 * 1000,
-      sameSite: "lax",
-      // secure: true,
-    },
-  })
-);
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: "session",
+//     cookie: {
+//       // maxAge: 30 * 60 * 60 * 1000,
+//       sameSite: "lax",
+//       // secure: true,
+//     },
+//   })
+// );
 
 // const corsOptions = {
 //   origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
@@ -57,7 +57,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 function authenticateToken(req, res, next) {
-  const token = req.session.jwt;
+  const token = req.cookies.jwt;
   if (token == null) return res.sendStatus(401);
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
