@@ -26,20 +26,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 app.use(express.static(path.join(__dirname, "./build")));
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: "session",
-    cookie: {
-      // maxAge: 30 * 60 * 60 * 1000,
-      sameSite: "lax",
-      // secure: true,
-    },
-  })
-);
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: "session",
+//     cookie: {
+//       // maxAge: 30 * 60 * 60 * 1000,
+//       sameSite: "lax",
+//       // secure: true,
+//     },
+//   })
+// );
 
 // const corsOptions = {
 //   origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
