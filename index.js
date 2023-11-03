@@ -58,8 +58,8 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 // app.use(limiter);
 
 function authenticateToken(req, res, next) {
-  // const token = req.cookies.jwt;
-  const token = req.session.jwt;
+  const token = req.cookies.jwt;
+  // const token = req.session.jwt;
   if (token == null) return res.sendStatus(401);
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
