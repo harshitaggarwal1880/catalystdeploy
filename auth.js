@@ -45,10 +45,10 @@ route.get("/test", (req, res) => {
 });
 
 route.post("/authenticate", (req, res) => {
-  const token = req.cookies.jwt;
+  const token = req.cookies.jwt || req.cookies["jwt"];
   // const token = req.session.jwt
   // console.log(token);
-  if (token == null) return res.status(401).json({status: false, message: "You are not Authenticate user, Please login again", token});
+  if (!token) return res.status(401).json({status: false, message: "You are not Authenticate user, Please login again", token});
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err)  return res.status(403).json({status: false, message: "You are not Authenticate user, Please login again", token});
     req.user = user;
@@ -108,7 +108,8 @@ route.post("/login", (req, res) => {
       if (isMatch) {
         const user = { id: userId, name: username };
         const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
-        res.cookie("jwt", accessToken, { sameSite: 'lax' });
+        // res.cookie("jwt", accessToken, { sameSite: 'lax' });
+        res.cookie("jwt", accessToken, { httpOnly: true, sameSite: 'strict', secure: true });
         // req.session.jwt = accessToken;
         res.send(true);
       } else {
