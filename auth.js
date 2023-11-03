@@ -147,7 +147,8 @@ function authenticateToken(req, res, next) {
 }
 
 route.get("/clear", (req, res) => {
-  res.clearCookie("jwt", { path: "/" });
+  // res.clearCookie("jwt", { path: "/" });
+  res.cookie("jwt", null, { sameSite: 'lax' });  
   // req.session.jwt = null;
   res.send(true);
 });
