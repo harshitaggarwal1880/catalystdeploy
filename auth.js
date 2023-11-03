@@ -138,6 +138,7 @@ route.get("/isLoggedIn", (req, res) => {
 
 function authenticateToken(req, res, next) {
   // const token = req.session.jwt;
+  // const token = req.cookies.jwt;
   const token = req.cookies.jwt;
   if (token == null) return false;
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {

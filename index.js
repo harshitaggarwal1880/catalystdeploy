@@ -74,7 +74,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); 
 
 app.get("/api/test", (req, res) => {
   const q = "Select * FROM users";
