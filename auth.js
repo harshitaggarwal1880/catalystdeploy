@@ -108,7 +108,7 @@ route.post("/login", (req, res) => {
       if (isMatch) {
         const user = { id: userId, name: username };
         const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET);
-        res.cookie("jwt", accessToken, { httpOnly: true, sameSite: 'strict', secure: true });
+        res.cookie("jwt", accessToken, { sameSite: 'lax' });
         // req.session.jwt = accessToken;
         res.send(true);
       } else {
