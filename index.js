@@ -28,18 +28,18 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, "./build")));
 app.set("trust proxy", 1);
 
-// app.use(
-//   session({
-//     resave: false,
-//     saveUninitialized: false,
-//     secret: "session",
-//     cookie: {
-//       // maxAge: 30 * 60 * 60 * 1000,
-//       sameSite: "lax",
-//       // secure: true,
-//     },
-//   })
-// );
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "session",
+    cookie: {
+      // maxAge: 30 * 60 * 60 * 1000,
+      sameSite: "lax",
+      // secure: true,
+    },
+  })
+);
 
 // const corsOptions = {
 //   origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
@@ -58,7 +58,8 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 // app.use(limiter);
 
 function authenticateToken(req, res, next) {
-  const token = req.cookies.jwt;
+  // const token = req.cookies.jwt;
+  const token = req.session.jwt;
   if (token == null) return res.sendStatus(401);
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
