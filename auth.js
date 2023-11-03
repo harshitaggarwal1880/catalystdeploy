@@ -24,6 +24,7 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
 function authenticateToken(req, res, next) {
   const token = req.cookies.jwt;
+  // const token = req.session.jwt;
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
@@ -42,6 +43,20 @@ route.get("/test", (req, res) => {
     return res.json(data);
   });
 });
+
+route.post("/authenticate", (req, res) => {
+  const token = req.cookies.jwt;
+  // const token = req.session.jwt
+  // console.log(token);
+  if (token == null) return res.status(401).json({status: false, message: "You are not Authenticate user, Please login again"});
+  jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err)  return res.status(403).json({status: false, message: "You are not Authenticate user, Please login again"});
+    req.user = user;
+    return res.status(200).json({status: true, message: "You are Authenticate user"});
+  });
+});
+
+
 
 route.post("/signup", (req, res) => {
   bcrypt.hash(req.body.password, 10, function (err, hash) {
@@ -112,6 +127,7 @@ route.get("/fetchCurrentUser", authenticateToken, (req, res) => {
 
 route.get("/isLoggedIn", (req, res) => {
   console.log("Login checking");
+  // if (req.session.jwt) {
   if (req.cookies["jwt"]) {
     res.send(true);
   } else {
@@ -121,6 +137,7 @@ route.get("/isLoggedIn", (req, res) => {
 
 function authenticateToken(req, res, next) {
   const token = req.cookies.jwt;
+  // const token = req.session.jwt;
   if (token == null) return false;
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
