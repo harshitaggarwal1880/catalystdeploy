@@ -48,11 +48,11 @@ route.post("/authenticate", (req, res) => {
   // const token = req.cookies.jwt;
   const token = req.session.jwt
   // console.log(token);
-  if (token == null) return res.status(401).json({status: false, message: "You are not Authenticate user, Please login again"});
+  if (token == null) return res.status(401).json({status: false, message: "You are not Authenticate user, Please login again", token});
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err)  return res.status(403).json({status: false, message: "You are not Authenticate user, Please login again"});
+    if (err)  return res.status(403).json({status: false, message: "You are not Authenticate user, Please login again", token});
     req.user = user;
-    return res.status(200).json({status: true, message: "You are Authenticate user"});
+    return res.status(200).json({status: true, message: "You are Authenticate user", token});
   });
 });
 
