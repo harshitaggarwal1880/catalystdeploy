@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const rateLimit = require("express-rate-limit");
 const path = require("path");
 const authRoutes = require("./auth");
-// const session = require("express-session");
+const session = require("express-session");
 
 const app = express();
 
