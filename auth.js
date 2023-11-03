@@ -147,7 +147,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-route.get("/clear", (req, res) => {
+route.post("/clear", (req, res) => {
   res.clearCookie("jwt", { path: "/" });
   // res.cookie("jwt", null, { sameSite: 'lax' });  
   // req.session.jwt = null;
